@@ -1,0 +1,437 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Security Notice</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        background: #000;
+        color: #0f0;
+        font-family: "Courier New", monospace;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .matrix-bg {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+        opacity: 0.1;
+      }
+
+      .container {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        padding: 20px;
+        text-align: center;
+      }
+
+      .skull {
+        font-size: 40px;
+        margin-bottom: 15px;
+        animation: pulse 2s infinite;
+        text-shadow:
+          0 0 20px #0f0,
+          0 0 40px #0f0;
+      }
+
+      .title {
+        font-size: 28px;
+        font-weight: bold;
+        margin-bottom: 15px;
+        text-shadow:
+          0 0 10px #0f0,
+          0 0 20px #0f0,
+          0 0 30px #0f0;
+        animation: glitch 3s infinite;
+      }
+
+      .subtitle {
+        font-size: 16px;
+        margin-bottom: 20px;
+        color: #f00;
+        text-shadow: 0 0 10px #f00;
+      }
+
+      .message {
+        font-size: 14px;
+        max-width: 100%;
+        line-height: 1.6;
+        margin-bottom: 20px;
+        padding: 15px;
+        border: 2px solid #0f0;
+        background: rgba(0, 255, 0, 0.05);
+        box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
+      }
+
+      .warning {
+        color: #ff0;
+        font-size: 12px;
+        margin-bottom: 15px;
+        animation: blink 1s infinite;
+      }
+
+      .signature {
+        font-size: 14px;
+        margin-top: 20px;
+        color: #0ff;
+        text-shadow: 0 0 10px #0ff;
+      }
+
+      .ascii-art {
+        font-size: 8px;
+        line-height: 1.2;
+        margin: 20px 0;
+        white-space: pre;
+        color: #0f0;
+        overflow-x: auto;
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.1);
+        }
+      }
+
+      @keyframes blink {
+        0%,
+        50% {
+          opacity: 1;
+        }
+        51%,
+        100% {
+          opacity: 0;
+        }
+      }
+
+      @keyframes glitch {
+        0%,
+        90%,
+        100% {
+          transform: translate(0);
+        }
+        92% {
+          transform: translate(-2px, 2px);
+        }
+        94% {
+          transform: translate(2px, -2px);
+        }
+        96% {
+          transform: translate(-2px, -2px);
+        }
+        98% {
+          transform: translate(2px, 2px);
+        }
+      }
+
+      .stats {
+        display: flex;
+        gap: 15px;
+        margin: 20px 0;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .stat-item {
+        padding: 10px 15px;
+        border: 1px solid #0f0;
+        background: rgba(0, 0, 0, 0.8);
+        flex: 1 1 calc(33.333% - 15px);
+        min-width: 100px;
+      }
+
+      .stat-label {
+        font-size: 10px;
+        color: #0f0;
+        margin-bottom: 5px;
+      }
+
+      .stat-value {
+        font-size: 18px;
+        color: #f00;
+        font-weight: bold;
+      }
+
+      .social {
+        margin-top: 20px;
+        font-size: 12px;
+      }
+
+      .social a {
+        color: #0ff;
+        text-decoration: none;
+        margin: 0 5px;
+        display: inline-block;
+      }
+
+      .social a:hover {
+        text-shadow: 0 0 10px #0ff;
+      }
+
+      canvas {
+        display: block;
+      }
+
+      /* Tablet and larger (min-width: 768px) */
+      @media (min-width: 768px) {
+        .skull {
+          font-size: 60px;
+          margin-bottom: 20px;
+        }
+
+        .title {
+          font-size: 36px;
+          margin-bottom: 20px;
+        }
+
+        .subtitle {
+          font-size: 20px;
+          margin-bottom: 25px;
+        }
+
+        .message {
+          font-size: 16px;
+          padding: 20px;
+          margin-bottom: 25px;
+        }
+
+        .warning {
+          font-size: 14px;
+          margin-bottom: 20px;
+        }
+
+        .signature {
+          font-size: 18px;
+          margin-top: 25px;
+        }
+
+        .ascii-art {
+          font-size: 10px;
+          margin: 25px 0;
+        }
+
+        .stats {
+          gap: 20px;
+          margin: 25px 0;
+        }
+
+        .stat-item {
+          padding: 12px 20px;
+        }
+
+        .stat-label {
+          font-size: 11px;
+        }
+
+        .stat-value {
+          font-size: 20px;
+        }
+
+        .social {
+          font-size: 13px;
+        }
+
+        .social a {
+          margin: 0 8px;
+        }
+      }
+
+      /* Desktop and larger (min-width: 1024px) */
+      @media (min-width: 1024px) {
+        .skull {
+          font-size: 80px;
+          margin-bottom: 20px;
+        }
+
+        .title {
+          font-size: 48px;
+          margin-bottom: 20px;
+        }
+
+        .subtitle {
+          font-size: 24px;
+          margin-bottom: 30px;
+        }
+
+        .message {
+          font-size: 18px;
+          max-width: 800px;
+          padding: 20px;
+          margin-bottom: 30px;
+        }
+
+        .warning {
+          font-size: 16px;
+          margin-bottom: 20px;
+        }
+
+        .signature {
+          font-size: 20px;
+          margin-top: 30px;
+        }
+
+        .ascii-art {
+          font-size: 12px;
+          margin: 30px 0;
+        }
+
+        .stats {
+          gap: 30px;
+          margin: 30px 0;
+        }
+
+        .stat-item {
+          padding: 15px 30px;
+        }
+
+        .stat-label {
+          font-size: 12px;
+        }
+
+        .stat-value {
+          font-size: 24px;
+        }
+
+        .social {
+          font-size: 14px;
+        }
+
+        .social a {
+          margin: 0 10px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <canvas class="matrix-bg" id="matrix"></canvas>
+
+    <div class="container">
+      <div class="skull">☠️</div>
+
+      <div class="title">SECURITY BREACH</div>
+
+      <div class="subtitle">Website Successfully Compromised</div>
+
+      <div class="ascii-art">
+        ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ / \/ \/ \/ \/ \/ \/ \/ \/ \/ \ (
+        H )( A )( C )( K )( E )( D )( ! )( ! )( ! )( ! )
+        \___/\___/\___/\___/\___/\___/\___/\___/\___/\___/
+      </div>
+
+      <div class="message">
+        ⚠️ SECURITY NOTICE ⚠️<br /><br />
+        This website has been penetrated for educational and security research
+        purposes.<br />
+        Your security measures were insufficient to prevent unauthorized
+        access.<br /><br />
+        <strong>VULNERABILITIES EXPLOITED:</strong><br />
+        • SQL Injection<br />
+        • Cross-Site Scripting (XSS)<br />
+        • Weak Authentication<br />
+        • Outdated Software Components<br /><br />
+        This is a demonstration for authorized security testing only.
+      </div>
+
+      <div class="stats">
+        <div class="stat-item">
+          <div class="stat-label">BREACH TIME</div>
+          <div class="stat-value" id="time">00:00:00</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-label">VULNERABILITIES</div>
+          <div class="stat-value">4</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-label">SECURITY LEVEL</div>
+          <div class="stat-value">LOW</div>
+        </div>
+      </div>
+
+      <div class="warning">
+        ⚡ UNAUTHORIZED ACCESS IS ILLEGAL ⚡<br />
+        This page is for authorized penetration testing only
+      </div>
+
+      <div class="signature">
+        — Security Research Team —<br />
+        [ EDUCATIONAL PURPOSES ONLY ]
+      </div>
+
+      <div class="social">Contact: security@example.com</div>
+    </div>
+
+    <script>
+      // Matrix rain effect
+      const canvas = document.getElementById("matrix");
+      const ctx = canvas.getContext("2d");
+
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      const chars =
+        "01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン";
+      const fontSize = 14;
+      const columns = canvas.width / fontSize;
+      const drops = Array(Math.floor(columns)).fill(1);
+
+      function drawMatrix() {
+        ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        ctx.fillStyle = "#0f0";
+        ctx.font = fontSize + "px monospace";
+
+        for (let i = 0; i < drops.length; i++) {
+          const text = chars[Math.floor(Math.random() * chars.length)];
+          ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+          if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+            drops[i] = 0;
+          }
+          drops[i]++;
+        }
+      }
+
+      setInterval(drawMatrix, 35);
+
+      // Timer
+      let seconds = 0;
+      setInterval(() => {
+        seconds++;
+        const hrs = Math.floor(seconds / 3600)
+          .toString()
+          .padStart(2, "0");
+        const mins = Math.floor((seconds % 3600) / 60)
+          .toString()
+          .padStart(2, "0");
+        const secs = (seconds % 60).toString().padStart(2, "0");
+        document.getElementById("time").textContent = `${hrs}:${mins}:${secs}`;
+      }, 1000);
+
+      // Resize canvas on window resize
+      window.addEventListener("resize", () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      });
+    </script>
+  </body>
+</html>
